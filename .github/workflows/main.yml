@@ -20,7 +20,7 @@ jobs:
           Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' `
             -Name "SecurityLayer" -Value 0 -Force
           netsh advfirewall firewall delete rule name="RDP-Tailscale" 2>$null
-          netsh advfirewall firewall add rule name="NOBIXRDP-Tailscale" `
+          netsh advfirewall firewall add rule name="BLACKOUTRDP-Tailscale" `
             dir=in action=allow protocol=TCP localport=3389
           Restart-Service TermService -Force
       # ------------------------------------------------------------
@@ -44,10 +44,10 @@ jobs:
             Sort-Object { Get-Random }
           )
           $secure = ConvertTo-SecureString $password -AsPlainText -Force
-          New-LocalUser -Name "NOBIXRDP" -Password $secure -AccountNeverExpires
-          Add-LocalGroupMember -Group "Administrators" -Member "NOBIXRDP"
+          New-LocalUser -Name "BLACKOUTRDP" -Password $secure -AccountNeverExpires
+          Add-LocalGroupMember -Group "Administrators" -Member "BLACKOUTRDP"
           Add-LocalGroupMember -Group "Remote Desktop Users" -Member "NOBIXRDP"
-          echo "RDP_USER=NOBIXRDP" >> $env:GITHUB_ENV
+          echo "RDP_USER=BLACKOUTRDP" >> $env:GITHUB_ENV
           echo "RDP_PASS=$password" >> $env:GITHUB_ENV
       # ------------------------------------------------------------
       # Install Tailscale (FIXED)
